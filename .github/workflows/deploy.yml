@@ -59,3 +59,16 @@ jobs:
             # 4. Kill the old container and start the new one
             docker rm -f web-server || true
             docker run -d -p 80:80 --name web-server my-devops
+
+            script: |
+            # 1. Enter the directory
+            cd ~/app
+            
+            # 2. Pull the absolute latest code
+            git fetch origin main
+            git reset --hard origin/main
+            
+            # 3. Build and Run (Explicitly pointing to this folder)
+            docker build --no-cache -t my-devops .
+            docker rm -f web-server || true
+            docker run -d -p 80:80 --name web-server my-devops
